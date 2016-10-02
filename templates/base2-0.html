@@ -1,0 +1,180 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+
+<!--/header--><!DOCTYPE HTML>
+<html>
+<head>
+<title>Heidritech - A Tech Blog</title>
+<link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/light-bootstrap/all.min.css" />
+<link href="/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="/static/css/style.css" rel='stylesheet' type='text/css' />
+<link href="/static/css/comments.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/post_comment.css" rel="stylesheet" type="text/css" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Personal Blog Responsive web template, Bootstrap Web Templates, Flat Web Templates,  Android Compatible web template,
+Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, sony ericsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!----webfonts---->
+<link href='//fonts.googleapis.com/css?family=Oswald:100,400,300,700' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Lato:100,300,400,700,900,300italic' rel='stylesheet' type='text/css'>
+
+<!----//webfonts---->
+<script src="/static/js/jquery.min.js"></script>
+<!--end slider -->
+<!--script-->
+{{ moment.include_moment() }}
+<script type="text/javascript" src="/static/js/move-top.js"></script>
+<script type="text/javascript" src="/static/js/easing.js"></script>
+<script src="../static/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+        $("#files").shieldUpload();
+    });
+</script>
+<!--/script-->
+<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				$(".scroll").click(function(event){
+					event.preventDefault();
+					$('html,body').animate({scrollTop:$(this.hash).offset().top},900);
+				});
+			});
+</script>
+<!---->
+</head>
+<body>
+<!---header---->
+<div class="header">
+	 <div class="container">
+		  <div class="logo">
+			  <a href="/"><img src="/static/images/logo.jpg" title="" /></a>
+		  </div>
+			 <!---start-top-nav---->
+			 <div class="top-menu">
+				 <div class="search">
+					 <form>
+					 <input type="text" placeholder="" required="">
+					 <input type="submit" value=""/>
+					 </form>
+				 </div>
+				  <span class="menu"> </span>
+				   <ul>
+						<li class="active"><a href="/">HOME</a></li>
+						<li><a href="/about">ABOUT</a></li>
+						<li><a href="/contact">CONTACT</a></li>
+                   {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('logout') }}">SIGN OUT</a> </li>
+{#              <li><a class="blog-nav-item" href="{{ url_for('account') }}">Account</a></li>#}
+                        <li><a href="{{ url_for('user', username=current_user.username) }}">PROFILE</a></li>
+                  {% if current_user.role == 3 %}
+                        <li><a href="{{ url_for('admin_panel') }}">ADMIN</a></li>
+                  {% endif %}
+
+              {% else %}
+                        <li><a href="{{ url_for('login_or_signup') }}">SIGN IN/SIGN UP</a> </li>
+              {% endif %}
+						<div class="clearfix"> </div>
+				 </ul>
+			 </div>
+
+			 <div class="clearfix"></div>
+					<script>
+					$("span.menu").click(function(){
+					$(".top-menu ul").slideToggle("slow" , function(){
+					});
+					});
+					</script>
+				<!---//End-top-nav---->
+	 </div>
+</div>
+
+<div class="content">
+	 <div class="container">
+    {% if current_user.role == 3 %}
+        {% block create_post %}
+        {% endblock %}
+    {% endif %}
+		 <div class="content-grids">
+         {% block content %}
+			 <div class="col-md-8 content-main">
+				 <div class="content-grid">
+                     {% block post_info %}
+					 <div class="content-grid-info">
+						 <img src="/static/images/post1.jpg" alt=""/>
+						 <div class="post-info">
+						 <h4><a href="/post">Lorem ipsum dolor sit amet</a>  July 30, 2014 / 27 Comments</h4>
+						 <p>Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis.</p>
+						 <a href="/post"><span></span>READ MORE</a>
+						 </div>
+					 </div>
+                     {% endblock %}
+				 </div>
+			  </div>
+         {% endblock %}
+             {% block side_content %}
+			  <div class="col-md-4 content-right">
+				 <div class="recent">
+					 <h3>RECENT POSTS</h3>
+					 <ul>
+					 <li><a href="{{ url_for('permalink_post', id=posts[0]['posts_id']) }}">{{ posts[0]['post_title'] }}</a></li>
+					 <li><a href="{{ url_for('permalink_post', id=posts[1]['posts_id']) }}">{{ posts[1]['post_title'] }}</a></li>
+					 <li><a href="{{ url_for('permalink_post', id=posts[2]['posts_id']) }}">{{ posts[2]['post_title'] }}</a></li>
+					 <li><a href="{{ url_for('permalink_post', id=posts[3]['posts_id']) }}">{{ posts[3]['post_title'] }}</a></li>
+					 </ul>
+				 </div>
+				 <div class="comments">
+					 <h3>RECENT COMMENTS</h3>
+					 <ul>
+					 <li><a href="{{ url_for('.user', username=comments[0]['username']) }}">{{ comments[0]['username'] }}</a>
+                         on <a href="{{ url_for('permalink_post', id=comments[0]['post_id']) }}">{{ comments[0]['post_title'] }}</a></li>
+					 <li><a href="{{ url_for('.user', username=comments[1]['username']) }}">{{ comments[1]['username'] }}</a>
+                         on <a href="{{ url_for('permalink_post', id=comments[1]['post_id']) }}">{{ comments[1]['post_title'] }}</a></li>
+					 <li><a href="{{ url_for('.user', username=comments[2]['username']) }}">{{ comments[2]['username'] }}</a>
+                         on <a href="{{ url_for('permalink_post', id=comments[2]['post_id']) }}">{{ comments[2]['post_title'] }}</a></li>
+					 </ul>
+				 </div>
+				 <div class="clearfix"></div>
+				 <div class="archives">
+					 <h3>ARCHIVES</h3>
+					 <ul>
+					 <li><a href="{{ url_for('show_archive') }}">2016</a></li>
+					 </ul>
+				 </div>
+				 <div class="categories">
+					 <h3>CATEGORIES</h3>
+					 <ul>
+					 <li><a href="#">Vivamus vestibulum nulla</a></li>
+					 <li><a href="#">Integer vitae libero ac risus e</a></li>
+					 <li><a href="#">Vestibulum commo</a></li>
+					 <li><a href="#">Cras iaculis ultricies</a></li>
+					 </ul>
+				 </div>
+                  {% endblock %}
+				 <div class="clearfix"></div>
+			  </div>
+			  <div class="clearfix"></div>
+		  </div>
+	  </div>
+</div>
+
+<!---->
+<div class="footer">
+	<div class="container">
+		<p>© 2016 Levi Heidrick. All rights reserved.</p>
+	</div>
+</div>
+
+<!-- Scripts placed below to aide in page load times -->
+
+{{ moment.include_moment() }}
+<script type="text/javascript" src="/static/js/app2-0.js"></script>
+</body>
+</html>
+	

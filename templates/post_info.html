@@ -1,0 +1,74 @@
+{% extends 'base2-0.html' %}
+
+{% block create_post %}
+
+    <form class="form-horizontal" action="/submit_blog_post" method="post" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+        <div class="form-group">
+            <div class="col-sm-9">
+                {{ form.title(class='form-control', placeholder="Put your post title here...") }}
+            </div>
+        </div>
+
+        <div class="col-md-4"></div>
+
+    <div class="col-md-4">
+            <input type="file" id="files" name="files" multiple="multiple" />
+{#            <p style="text-align: right; margin-top: 20px;">#}
+{#                <input type="submit" value="Upload Files" class="btn btn-lg btn-primary" />#}
+{#            </p>#}
+    </div>
+    <div class="col-md-4"></div>
+
+
+        <div class="form-group">
+            <div class="col-sm-9">
+                <textarea name="text_post" id="text_post">Enter post content here...</textarea>
+
+                    <script>
+                        CKEDITOR.replaceAll();
+                    </script>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-9">
+                {{ form.submit(class='btn btn-primary') }}
+            </div>
+        </div>
+    </form>
+
+
+{##}
+{#    <form class="form-horizontal" action="/upload" method="post" enctype="multipart/form-data">#}
+{#        <input type="file" name="file">#}
+{#        <input type="submit" value="Upload">#}
+{#    </form>#}
+
+
+{% endblock %}
+
+
+{% block post_info %}
+    {% for post in posts %}
+        <div class="content-grid-info">
+            <img {% if post['img_src'] is not none %} src="{{ post['img_src'] }}" {% else %} src="/static/images/post3.jpg" {% endif %} alt="" style="width: 100%; height: auto; max-width: 669px; max-height: 320px"/>
+            <div class="post-info">
+                <h4><a href="{{ url_for('permalink_post', id=post['posts_id']) }}">{{ post['post_title'] }}</a></h4>
+                <h5>{{ moment(post['post_time']).format('LL') }} &nbsp; by
+                    <a href="{{ url_for('.user', username=post['username']) }}">{{ post['name'] }}</a></h5>
+
+                <div style="height: 4em; overflow: hidden">
+                    <p>
+                        {{ post['body'] |safe }}
+                    </p>
+                </div>
+                <a href="{{ url_for('permalink_post', id=post['posts_id']) }}"><span></span>READ MORE</a>
+            </div>
+        </div>
+    {% endfor %}
+
+    {{ paginate.info }}
+   {{ paginate.links }}
+{% endblock %}

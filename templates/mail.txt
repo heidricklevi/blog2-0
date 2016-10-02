@@ -1,0 +1,15 @@
+Dear {{ user.email}},
+
+Welcome to my site!
+
+
+To confirm your account please click on the following link:
+
+{{ url_for('confirm', token=token, _external=True) }}
+
+
+Sincerely,
+Admin
+
+
+Note: replies to this email address are not monitored

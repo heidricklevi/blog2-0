@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block blog_title %}
+{% endblock %}
+
+{% block blog_title_description %}
+{% endblock %}
+
+{% block post %}
+
+    <h2 class="blog-post-title">{{ posts[0]['post_title'] }}</h2>
+    <p class="blog-post-meta">{{ moment(posts[0]['post_time']).format('LL') }} | <a href="{{ url_for('.user', username=posts[0]['username']) }}">{{  posts[0]['name'] }}</a> </p>
+
+    {{ posts[0]['body'] | safe }}
+
+    <br />
+    <br />
+    <hr />
+
+{% endblock %}
+
+{% block display_comments %}
+
+    {% for comment in comments %}
+       <div class="post-list">
+            <ul id="comment-ul" style="list-style: none; padding-left: 0;">
+                <li style="float: left; height: auto">
+                    <div class="posted-comment" style="padding-left: 0; border-radius: 3px; display: inline; padding-bottom: 24px "><a href="{{ url_for('.user', username=comment['username']) }}">
+                        <img src="https://secure.gravatar.com/avatar/{{ comment['gravatar_hash'] }}?s=50&d=identicon&r=g" class="user">
+                    </a>
+                    </div>
+                </li>
+
+                <li style="margin-bottom: auto; ">
+                     <header class="comment-header" style="line-height: 1; font-size: 13px">
+                        <span class="post-byline">
+                            <span id="username" class="author pub-color">{{ comment['username'] }}</span>
+                        </span>
+                         <style scoped>
+                            span {
+                                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                                font-weight: 700;
+                            }
+                         </style>
+                        - {{ moment(comment['comment_time']).fromNow() }}
+                     </header>
+                    <div class="comment-display-body">
+                      <div style="position: relative; ">
+                        <div class="comment-inner" style="">
+                            <p style="margin-bottom: auto">{{ comment['body'] }}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="comment-footer" >
+                        {% if comment['is_disabled'] == true %}
+                        <a href="{{ url_for('comment_disable', id=comment['id'], post_id=comment['post_id']) }}">
+                            <span id="com-disabled" class="label label-danger">Enable</span>
+                        </a>
+                        {% elif comment['is_disabled'] == false %}
+                        <a href="{{ url_for('comment_disable', id=comment['id'], post_id=comment['post_id']) }}">
+                            <span id="com-enabled" class="label label-danger">Disable</span>
+                        </a>
+                        {% endif %}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    {% endfor %}
+
+    {% if user.role != 3 %}
+    <script type="text/javascript">
+           var mod = document.getElementsByClassName("comment-footer");
+           for (var i = 0; i < mod.length; i++){
+               comment_footer = mod.item(i);
+               comment_footer.style.display = 'none';
+           }
+        </script>
+    {% endif %}
+
+    <script type="text/javascript">
+        var c = document.getElementsByClassName('comment-footer');
+        for (var i = 0; i < c.length; i++){
+            var cm = c.item(i);
+            var chNode = cm.childNodes;
+            for (var j = 0; j < chNode.length; j++){
+                var q = chNode.item(j);
+                var anch = q.firstChild;
+                if (anch != null){
+                    anch = anch.nextSibling;
+                    if (anch['id'] == "com-disabled"){
+                        disableComment(anch);
+                    }
+                }
+            }
+        }
+
+        function disableComment(anch){
+            var parent = anch.firstChild.parentNode.offsetParent;
+            commentUL = parent.parentNode.parentNode.firstElementChild;
+            commentBody = commentUL.nextElementSibling.childNodes[1];
+
+            commentUL.firstElementChild.firstElementChild.firstElementChild
+                    .setAttribute('src', "../static/img/Default-Gravatar.jpg");
+            commentUL.firstElementChild.firstElementChild.firstElementChild.setAttribute('style', 'width: 50px; height: 50px;');
+            commentUL.nextElementSibling.getElementsByTagName('p')[0].innerHTML
+             = "This comment has been disabled by the site administrator.";
+
+            commentBody.firstElementChild.firstElementChild.innerHTML = "Admin";
+        }
+    </script>
+
+{% endblock %}
+
+{% block comments %}
+<!---------------------------------------------------------------------->
+
+    <header id="main-nav">
+        <nav class="nav nav-primary">
+            <ul style="list-style: none; -webkit-padding-start: 0">
+                <li class="nav-tab nav-tab-primary">
+                    <span class="tab-content">{{ user.username }}</span>
+                </li>
+                <li class="nav-tab nav-comment-count">
+                    <span class="tab-content">{{ posts[0]['comment_count'] }} Comments</span>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div id="posts">
+    {% if user.is_anonymous == true %}
+        <style scoped>
+            #comment-form {
+                -webkit-filter: blur(5px);
+                filter: blur(10px);
+            }
+        </style>
+        <p style="font-family: Verdana">Please <i>Create an Account</i> and/or <i>Sign in</i> to post a comment.</p>
+    {% endif %}
+        <form id="comment-form" class="form-horizontal" action="{{ url_for('post_comment', id=posts[0]['posts_id']) }}" method="post">
+            <div class="comments">
+                <div class="avatar">
+                    {% if user.is_anonymous == true %}
+                    <img data-role="user-avatar" src="../static/img/Default-Gravatar.jpg" class="user" style="width: 50px; height: 50px">
+                    {% else %}
+                    <img data-role="user-avatar" src="{{ user.gravatar(size=50) }}" class="user">
+                    {% endif %}
+                </div>
+
+                <div class="comment-body" style="position: relative; left: 60px; right: 0; top: 0; ">
+                    <textarea class="comment_body" id="comment_body" name="comment_body" placeholder="Join the Discussion..."></textarea>
+                    <div class="post-comment">
+                        <div class="display-post-comment" style="text-align:right ">
+                            {{ form.submit(class='btn btn-primary') }}
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+
+
+
+    </div>
+<!---------------------------------------------------------------------->
+
+
+{% endblock %}
+
+{% block paginate %}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base2-0.html" %}
+
+{% block blog_title %}
+    <h3>Here you can edit this post. </h3>
+{% endblock %}
+
+{% block blog_title_description %}
+
+{% endblock %}
+
+{% block post %}
+    <form class="form-horizontal" action="{{ url_for('edit_post', id=post[0]["posts_id"]) }}" method="post">
+        {{ form.csrf_token }}
+
+    <div class="form-group">
+        <div class="col-sm-9">
+            {{ form.title(class='form-control', placeholder="Put your post title here...") }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-9">
+            <textarea name="text_post" id="text_post">Post content entered here and submitted will replace the previous post that is being edited</textarea>
+                <script>
+                    CKEDITOR.replaceAll();
+                </script>
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-9">
+            {{ form.submit(class='btn btn-primary') }}
+        </div>
+    </div>
+    </form>
+
+
+        <h2 class="blog-post-title">{{ post[0]['post_title'] }}</h2>
+         <p class="blog-post-meta">{{ post[0]['post_time'] }} <a href="{{ url_for('.user', username=post[0]['username']) }}">{{ post[0]['username'] }}</a> </p>
+
+         {{ post[0]['body'] | safe }}
+
+         <br />
+         <br />
+
+{% endblock %}
+
+
+{% block side_content %}
+{% endblock %}
+
+
+{% block paginate %}
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'base2-0.html' %}
+<!---header---->			
+
+
+{% block content %}
+    <script type="text/javascript">
+            $(document).ready(function(){
+                $("[data-toggle=tooltip]").tooltip();
+            });
+    </script>
+
+      <div class="col-md-8 single-main">
+      <h1 style="color: #18C0DF; padding-top: 0; padding-bottom: 25px"> {{ posts[0]['post_title'] }}</h1>
+		  <div class="single-grid">
+	    		<img {% if posts[0]['img_src'] is not none %} src="\{{ posts[0]['img_src'] }}" {% else %} src="/static/images/post3.jpg" {% endif %} style="width: 100%; height: auto; max-width: 669px; max-height: 320px" alt=""/>
+				<p>{{ posts[0]['body'] | safe }}</p>
+          </div>
+		  <ul class="comment-list">
+		        <h5 class="post-author_head">Written by <a href="{{ url_for('.user', username=posts[0]['username']) }}" title="Posts by admin" rel="author">{{ posts[0]['name'] }}</a></h5>
+		  		<li><img src="https://secure.gravatar.com/avatar/{{ posts[0]['gravatar_hash'] }}?s=50&d=identicon&r=g" class="img-responsive" alt="">
+		  		    <div class="desc">
+		  		        <p>View all posts by: <a href="{{ url_for('.user', username=posts[0]['username']) }}" title="Posts by admin" rel="author">{{ posts[0]['name'] }}</a></p>
+		  		    </div>
+		  		    <div class="clearfix"></div>
+		  		</li>
+		  </ul>
+      </div>
+
+
+<link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
+<div class="container">
+
+
+
+    <div class="row">
+            <div class="col-md-8">
+            <div style="padding-top: 15%; padding-bottom: 5%">
+                {% if posts[0]['comment_count'] == None %}
+                     <span style="font-size: larger">0 Comments</span>&nbsp;
+                {% elif posts[0]['comment_count'] == 1 %}
+                     <span class="lbl lbl-primary lbl-large" style="font-size: larger">{{ posts[0]['comment_count'] }} Comment</span>&nbsp;
+                {% else %}
+                     <span class="lbl lbl-primary lbl-large" style="font-size: larger">{{ posts[0]['comment_count'] }} Comments</span>&nbsp;
+                {% endif %}
+            <div style="border-bottom-style: solid; color: #00aeff ">
+
+            </div>
+
+            </div>
+                 <div class="pull-left">
+                        {% if user.is_anonymous == true %}
+                            <img data-role="user-avatar" src="../static/images/Default-Gravatar.jpg" class="user" style="width: 50px; height: 50px">
+                        {% else %}
+                            <img data-role="user-avatar" src="{{ user.gravatar(size=50) }}" class="user">
+                        {% endif %}
+                 </div>
+    {% if user.is_anonymous == true %}
+        <style scoped>
+            #comment-form {
+                -webkit-filter: blur(5px);
+                filter: blur(10px);
+            }
+        </style>
+        <p style="padding-left: 20px">Please <a style="color: #0000cc" href="{{ url_for('login_or_signup') }}">Sign in/Sign up</a> to post a comment.</p>
+    {% endif %}
+                <div class="widget-area no-padding blank" style="float: left; width: 93%; padding-left: 10px">
+                        <div class="status-upload">
+                            <form id="comment-form" action="{{ url_for('post_comment', id=posts[0]['posts_id']) }}" method="post">
+                                <textarea name="comment_body" placeholder="Write your comment here" ></textarea>
+                                <button type="submit" class="btn btn-success green"><i class="fa fa-reply"></i>Post</button>
+                            </form>
+                        </div><!-- Status Upload  -->
+                </div><!-- Widget Area -->
+        <div>
+            </div>
+    </div>
+</div>
+
+
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<div class="container">
+    {% for comment in comments %}
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-white post panel-shadow">
+                <div class="post-heading">
+                    <div class="pull-left image">
+                        <img src="https://secure.gravatar.com/avatar/{{ comment['gravatar_hash'] }}?s=50&d=identicon&r=g"
+                             class="img-circle avatar" alt="user profile image">
+                    </div>
+                    <div class="pull-left meta">
+                        <div class="title h5">
+                            <a href="{{ url_for('.user', username=comment['username']) }}"><b>{{ comment['username'] }}</b></a>
+                            made a comment
+                        </div>
+                        <h6 class="text-muted time">{{ moment(comment['comment_time']).fromNow() }}</h6>
+                    </div>
+                </div>
+                <div class="post-description">
+                    <p>{{ comment['body'] }}</p>
+                    <div class="stats">
+                        <a href="#" class="btn btn-default stat-item">
+                            <i class="fa fa-thumbs-up icon"></i>2
+                        </a>
+                        <a href="#" class="btn btn-default stat-item">
+                            <i class="fa fa-thumbs-down icon"></i>12
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block side_content %}
+{% endblock %}
+<!---->
+<div class="footer">
+	<div class="container">
+		<p>© 2016 Levi Heidrick. All rights reserved.</p>
+	</div>
+</div>
+
+
+	

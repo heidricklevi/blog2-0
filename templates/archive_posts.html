@@ -1,0 +1,31 @@
+{% extends "base2-0.html" %}
+
+{% block side_content %}
+{% endblock %}
+
+{% block create_post %}
+{% endblock %}
+
+{% block post_info %}
+    {% for post in posts %}
+        <div class="content-grid-info">
+            <img {% if post['img_src'] is not none %} src="{{ post['img_src'] }}" {% else %} src="/static/images/post3.jpg" {% endif %} alt="" style="width: 100%; height: auto; max-width: 669px; max-height: 320px"/>
+            <div class="post-info">
+                <h4><a href="{{ url_for('permalink_post', id=post['posts_id']) }}">{{ post['post_title'] }}</a></h4>
+                <h5>{{ moment(post['post_time']).format('LL') }} &nbsp; by
+                    <a href="{{ url_for('.user', username=post['username']) }}">{{ post['name'] }}</a></h5>
+
+                <div style="height: 4em; overflow: hidden">
+                    <p>
+                        {{ post['body'] |safe }}
+                    </p>
+                </div>
+                <a href="{{ url_for('permalink_post', id=post['posts_id']) }}"><span></span>READ MORE</a>
+            </div>
+        </div>
+    {% endfor %}
+
+    {{ paginate.info }}
+   {{ paginate.links }}
+{% endblock %}
+

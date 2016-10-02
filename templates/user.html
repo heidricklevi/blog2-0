@@ -1,0 +1,133 @@
+{% extends "base2-0.html" %}
+
+{% block content %}
+    <style>
+        @media (min-width: 768px) {
+         .col-sm-offset-3{
+            margin-left: 0;
+            display: list-item;
+         }
+        }
+    </style>
+{#    <div class="align-left">#}
+{#      <div class="col-sm-offset-3">#}
+{#        <img src="{{ user_one.gravatar(size=256) }}" class="img-rounded">#}
+{#    </div>#}
+{#    </div>#}
+
+    <div class="page-header">
+       <div class="col-sm-offset-3" style="display: -webkit-box; margin-bottom: 5%">
+        <img src="{{ user_one.gravatar(size=256) }}" class="img-rounded">
+        <div style="padding-left: 15%; word-break: keep-all">
+                <div style="padding-top: 5px; font-size: large; max-width: 70%">
+                    <h1 style="padding-bottom: 10px; font-family: Verdana; font-size: x-large; font-weight: 700">{{ user[0]['name'] }}</h1>
+
+                {% if user[0]['username'] or user[0]['location']%}
+                <p style="font-family: Verdana; padding-bottom: 10px">
+                    {% if user[0]['username'] %}{{ user[0]['username']}}{% endif %}
+                    {% if user[0]['location'] %}
+                        | <i>From</i>
+                        <a href="http://maps.google.com/?q={{ user[0]['location']}}">{{ user[0]['location']}}</a>
+                    {% endif %}
+
+                </p>
+                {% endif %}
+
+                    <p style="font-family: Verdana; padding-bottom: 10px">
+                        Member Since {{ moment(user[0]['registration_date']).format('LL') }}
+                    </p>
+                    <p style="font-family: Verdana; padding-bottom: 10px">
+                        Last Active {{ moment(user[0]['modified_at']).fromNow() }}
+                    </p>
+
+                {% if user[0]['about_me'] %}
+                    <p  style="font-family: Verdana; padding-top: 20px; width: 100%">
+                        {{ user[0]['about_me'] }}</p>
+                    {% endif %}
+
+
+            </div>
+
+
+
+
+
+
+    </div>
+    </div>
+    </div>
+
+{% if user[0]['roles_id'] == 3 %}
+    <h3 style="padding-bottom: 20px">Posts by this Author:</h3>
+{#        <ul class="posts" style="list-style-type:none ">#}
+{#            {% for post in posts %}#}
+{#                <li class="blog-post">#}
+{#                    <div class="post-thumbnail">#}
+{#                        <a href="{{ url_for('.user', username=user[0]['username']) }}">#}
+{#                            <img class="img-rounded profile-thumbnail" src="{{ user_one.gravatar(size=40) }}">#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="post-content">#}
+{#                        <div class="post-date">{{ moment(post['post_time']).fromNow() }}</div>#}
+{#                        <div class="post-author"><a href="{{ url_for('.user', username=user[0]['username']) }}">#}
+{#                            {{ user[0]['name'] }}</a></div>#}
+{#                        <div class="post-title">#}
+{#                            {{ post['post_title'] }}#}
+{#                        </div>#}
+{#                        <div class="post-footer">#}
+{#                            <a href="{{ url_for("permalink_post", id=post["posts_id"]) }}">#}
+{#                                <span class="label label-primary">Permalink</span></a>&nbsp;#}
+{##}
+{#                            {% if post['comment_count'] == None %}#}
+{#                                <a id="comment_number" href="{{ url_for('permalink_post', id=post['posts_id']) }}#comments">#}
+{#                                    <span class="label label-primary">0 Comments</span></a>&nbsp;#}
+{#                            {% elif post['comment_count'] == 1 %}#}
+{#                                <a id="comment_number" href="{{ url_for('permalink_post', id=post['posts_id']) }}#comments">#}
+{#                                    <span class="label label-primary">{{ post['comment_count'] }} Comment</span></a>&nbsp;#}
+{#                            {% else %}#}
+{#                                <a id="comment_number" href="{{ url_for('permalink_post', id=post['posts_id']) }}#comments">#}
+{#                                    <span class="label label-primary">{{ post['comment_count'] }} Comments</span></a>&nbsp;#}
+{#                            {% endif %}#}
+{##}
+{#                             <a style="float: left" href="{{ url_for("permalink_post", id=post["posts_id"]) }}">#}
+{#                                <span class="label label-primary">Read Post . . . </span></a>&nbsp;#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </li>#}
+{##}
+{#        {% endfor %}#}
+{#        </ul>#}
+    <div class="col-md-8 content-main">
+		<div class="content-grid">
+        {% for post in posts %}
+            <div class="content-grid-info">
+                <img {% if post['img_src'] is not none %} src="\{{ post['img_src'] }}" {% else %} src="/static/images/post3.jpg" {% endif %} alt="" style="width: 100%; height: auto; max-width: 660px; max-height: 320px"/>
+                <div class="post-info">
+                    <h4><a href="{{ url_for('permalink_post', id=post['posts_id']) }}">{{ post['post_title'] }}</a></h4>
+                    <h5>{{ moment(post['post_time']).format('LL') }} &nbsp; by
+                        <a href="{{ url_for('.user', username=post['username']) }}">{{ user[0]['name'] }}</a></h5>
+
+                    <div style="height: 4em; overflow: hidden">
+                        <p>
+                            {{ post['body'] |safe }}
+                        </p>
+                    </div>
+                    <a href="{{ url_for('permalink_post', id=post['posts_id']) }}"><span></span>READ MORE</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+
+
+        {% if user[0]['email'] == current_user.email %}
+        <a class="btn btn-primary" href="{{ url_for('.edit_profile') }}">
+        Edit Profile
+        </a>
+        {% endif %}
+{% endif %}
+{% endblock %}
+
+
+{% block side_content %}
+{% endblock %}

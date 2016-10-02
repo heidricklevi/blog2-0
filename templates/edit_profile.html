@@ -1,0 +1,42 @@
+{% extends 'base2-0.html' %}
+
+
+{% block blog_title %}
+{% endblock %}
+
+{% block blog_title_description %}
+{% endblock %}
+
+{% block content %}
+
+    <form class="form-horizontal" style="padding-top: 100px;" action="/edit-profile" method="post">
+        {{ form.csrf_token }}
+    <div class="form-group">
+        <div class="col-sm-9">
+            {{ form.name(class='form-control', placeholder='Name') }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-9">
+            {{ form.location(class='form-control', placeholder='location') }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-9">
+            {{ form.about_me(class='form-control', placeholder='about me') }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-9">
+            {{ form.submit(class='btn btn-primary btn-block') }}
+        </div>
+    </div>
+    </form>
+
+{% endblock %}
+
+{% block paginate %}
+{% endblock %}
+
+{% block side_content %}
+{% endblock %}

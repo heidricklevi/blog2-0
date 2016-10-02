@@ -1,0 +1,49 @@
+{% extends "base2-0.html" %}
+<!--/header-->
+{% block content %}
+    <div class="about-content">
+         <div class="container">
+             <h2>Something About Me and Blogging</h2>
+             <div class="about-section">
+                 <div class="about-grid">
+                     <h3>Who am I?</h3>
+                     	Hello!
+	            		My name is Levi, I am the creator of this site. I am currently a student at The University of Kansas.
+                        I am in their engineering program for Information Technology of which I have about one year left!
+                        I am extremely passionate about technology. From building my own machine to deploying my own code to an EC2 instance
+                        - I love it all!
+                 </div>
+                 <div class="about-grid2">
+                     <h3>My Passion</h3>
+                     <p>I am driven by my passion for technology and eagerness to learn.
+                        Software facilitates and accommodates our everyday lives allowing convenience, communication, and advancements in
+                        nearly every field and area of our lives imaginable. Of course, we can't mention software without mentioning the
+                        hardware it runs on top of. Software could not exist without its accompanying hardware. When I think about computer
+                        architecture at a lower level, I think about how it interprets all the code several abstraction layers above it.
+                        The language of the physical hardware is binary, and it can only represent one of two states. This relatively simple
+                        form of Boolean logic is at the base of computers, circuits, and electronics in general. It is truly fascinating to
+                        think about every time I see the result of these systems and what is possible that it is all built on top of this
+                        seemingly simple logic. I find it intriguing, fascinating, and extremely enjoyable to create software and immerse
+                        myself in this technology on a daily basis. This is definitely something I want to be a part of.</p>
+                 </div>
+                 <div class="who-iam">
+                     <h3>Why I created this site</h3>
+                     <div class="man-info">
+                         <p>I built this site to help facilitate my learning and hopefully help other people learn as well.
+                        I wanted to learn more about the fascinating web, and the tech that powers it. That is why I built this application from scratch.
+                        I am hoping to turn this site into much more than a blog, but I think that is my best starting point. The blog will mainly consist
+                        of my experiences and roadblocks while building software and also some tips, tricks, and HOW-TO's.</p>
+                     </div>
+                     <div class="man-pic">
+                     <img style="padding: 15px;" src="https://secure.gravatar.com/avatar/{{ user[0]['gravatar_hash'] }}?s=164&d=identicon&r=g" class="user">
+                     </div>
+                     <div class="clearfix"></div>
+                 </div>
+              </div>
+          </div>
+    </div>
+{% endblock %}
+
+{% block side_content %}
+{% endblock %}
+	
