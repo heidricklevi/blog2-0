@@ -1,7 +1,7 @@
 dbconfig.py
 config.py
-static/uploads
-static/vendors
+/static/uploads
+/static/vendors
 config.cpython-35.pyc
 dbconfig.cpython-35.pyc
 dbhelper.cpython-35.pyc
